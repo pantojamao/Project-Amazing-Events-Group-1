@@ -1,21 +1,10 @@
 
-const container = document.querySelector('.swiper-wrapper');
-
 function addPastEvents() {
-    console.log( eventosPasados = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp))
-    for (let i = 0; i < eventosPasados.length; i++) {
-        const slide = document.createElement('div');
-        slide.classList.add("swiper-slide")
-        let CardImage = eventosPasados[i].image;
-        let CardName = eventosPasados[i].name;
-        let CardDescription = eventosPasados[i].description;
-        let CardPrice = eventosPasados[i].price;
-        const pastEventCard=createCardDiv(CardImage, CardName, CardDescription, CardPrice,
-            eventos.eventos[i].date, eventos.eventos[i].category, eventos.eventos[i].place, eventos.eventos[i].capacity, 
-            eventos.eventos[i].assistance || eventos.eventos[i].estimate);
-        slide.appendChild(pastEventCard);
-        container.appendChild(slide);
-    }
+    const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
+    const selectedEvents = getEventsBySelectedCategories(eventPast);
+    generateEventCards(selectedEvents, '.swiper-wrapper');
+
+
 }
 addPastEvents();
 
@@ -38,8 +27,24 @@ var swiper = new Swiper(".slide-content", {
 
 // document.querySelector("input[type=checkbox]").addEventListener("click",categoryFilter());
 
-// //crear una funcion como desde el addli se puede obtener el value del 
+// //crear una funcion como desde el addli se puede obtener el value del
 // function categoryFilter(event){
 
 // console.log("event"+event);
 // }
+
+
+
+
+
+
+
+
+
+
+
+
+// Aquí puedes hacer algo con las categorías seleccionadas, como filtrar elementos
+
+
+// basándote en sus categorías
