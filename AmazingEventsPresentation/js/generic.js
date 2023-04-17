@@ -158,6 +158,7 @@ const eventos = {
     ]
 }
 
+
 const fechaActualTimestamp = new Date('2022-01-01').getTime();
 
 // Crear las etiquetas correspondientes de Events.html
@@ -179,7 +180,7 @@ function createCardDiv(CardImage, CardName, CardDescription, CardPrice, cardDate
     title.classList.add('card-title', 'text-center');
     description.classList.add('card-text', 'w-80', 'p-1');
     detailsLink.classList.add('btn', 'btn-primary', 'button-Shadow');
-    detailsLink.addEventListener('click', () => { 
+    detailsLink.addEventListener('click', () => {
         sessionStorage.setItem('imagen', JSON.stringify(CardImage));
         sessionStorage.setItem('nombre', JSON.stringify(CardName));
         sessionStorage.setItem('descripcion', JSON.stringify(CardDescription));
@@ -213,4 +214,53 @@ function createCardDiv(CardImage, CardName, CardDescription, CardPrice, cardDate
 
     return cardDiv;
 }
+//Esta funcion obtiene un listado de  eventos de acuerdo a las categorias selecionadas
+//retorna un array de eventos 
+function getEventsBySelectedCategories(array) {
+    const selectedEvents = [];
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let noFiltersSelected = true; // Variable para verificar si no se seleccionó ningún checkbox
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            noFiltersSelected = false; // Al menos un checkbox está seleccionado
+            array.forEach((event) => {
+                if (checkbox.value === event.category) {
+                    selectedEvents.push(event);
+                }
+            });
+        }
+    });
+
+    // Si no se seleccionó ningún checkbox, devolver el arreglo original
+    if (noFiltersSelected) {
+        return array;
+    }
+
+    return selectedEvents;
+
+}
+
+
+function generateEventCards(array, containerId) {
+    const container = document.querySelector(containerId);
+    container.innerHTML = " ";
+    array.forEach(evento => {
+        const slide = document.createElement('div');
+        slide.classList.add("swiper-slide")
+        let CardImage = evento.image;
+        let CardName = evento.name;
+        let CardDescription = evento.description;
+        let CardPrice = evento.price;
+        const pastEventCard = createCardDiv(CardImage, CardName, CardDescription, CardPrice,
+            evento.date, evento.category, evento.place, evento.capacity,
+            evento.assistance || evento.estimate);
+        slide.appendChild(pastEventCard);
+        container.appendChild(slide)
+    });
+
+}
+
+
+
+
 
