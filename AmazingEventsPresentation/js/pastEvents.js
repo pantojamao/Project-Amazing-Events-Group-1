@@ -1,12 +1,27 @@
 
+
+// const button = document.getElementById("botton-search");
+// button.addEventListener("click", function () {
+//     const input = document.getElementById("input-search");
+//     if (input.value) {
+//         addPastEvents();
+//     } else {
+//         alert("Please enter a search term.");
+//     }
+// });
+const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
 function addPastEvents() {
-    const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
     const selectedEvents = getEventsBySelectedCategories(eventPast);
-    generateEventCards(selectedEvents, '.swiper-wrapper');
-
-
+    generateEventCards(selectedEvents, ".swiper-wrapper");
 }
+function botonSearch() {
+    const selectedEvents = filterSearch(eventPast);
+    generateEventCards(selectedEvents, ".swiper-wrapper");
+}
+
 addPastEvents();
+
+
 
 var swiper = new Swiper(".slide-content", {
     slidesPerView: 4,

@@ -216,6 +216,7 @@ function createCardDiv(CardImage, CardName, CardDescription, CardPrice, cardDate
 }
 //Esta funcion obtiene un listado de  eventos de acuerdo a las categorias selecionadas
 //retorna un array de eventos 
+
 function getEventsBySelectedCategories(array) {
     const selectedEvents = [];
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -238,6 +239,18 @@ function getEventsBySelectedCategories(array) {
 
     return selectedEvents;
 
+}
+function filterSearch(array) {
+    const selectedEvents = [];
+    const input = document.getElementById("input-search"); // Obtener el input
+    const regex = new RegExp(input.value.toLowerCase()); // Crear la expresión regular
+    array.filter(evento => {
+        // Filtrar los eventos que coincidan con la expresión regular en el título o la descripción
+        if (regex.test(evento.name.toLowerCase())) {
+            selectedEvents.push(evento);
+        }
+    });
+    return selectedEvents;
 }
 
 
