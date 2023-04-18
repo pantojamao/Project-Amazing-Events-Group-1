@@ -11,14 +11,20 @@
 // });
 const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
 function addPastEvents() {
-    const selectedEvents = getEventsBySelectedCategories(eventPast);
-    generateEventCards(selectedEvents, ".swiper-wrapper");
-}
-function botonSearch() {
-    const selectedEvents = filterSearch(eventPast);
-    generateEventCards(selectedEvents, ".swiper-wrapper");
-}
+    const selectedEventsByCategory = getEventsBySelectedCategories(eventPast);
+    const selectEventsByTitle = getEventsByTitle(selectedEventsByCategory);
+    console.log(selectEventsByTitle)
+    console.log("eventos pasados longitud", selectEventsByTitle.length)
+    if(selectEventsByTitle.length>0){
+        generateEventCards(selectEventsByTitle, ".swiper-wrapper");
 
+    }else{
+
+    }
+    
+
+
+}
 addPastEvents();
 
 

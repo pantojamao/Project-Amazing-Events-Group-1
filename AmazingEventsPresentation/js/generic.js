@@ -240,17 +240,12 @@ function getEventsBySelectedCategories(array) {
     return selectedEvents;
 
 }
-function filterSearch(array) {
-    const selectedEvents = [];
-    const input = document.getElementById("input-search"); // Obtener el input
-    const regex = new RegExp(input.value.toLowerCase()); // Crear la expresión regular
-    array.filter(evento => {
-        // Filtrar los eventos que coincidan con la expresión regular en el título o la descripción
-        if (regex.test(evento.name.toLowerCase())) {
-            selectedEvents.push(evento);
-        }
-    });
-    return selectedEvents;
+
+
+function getEventsByTitle(array) {
+    const input = document.getElementById("input-search"); 
+    const regex = new RegExp(input.value.toLowerCase());
+    return array.filter(evento => regex.test(evento.name.toLowerCase()));
 }
 
 
