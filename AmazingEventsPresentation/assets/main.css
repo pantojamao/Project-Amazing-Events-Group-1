@@ -163,3 +163,15 @@
 
 
 /*==========================================================================================*/
+/* Estilos para la tarjeta sin datos que coincidan */
+.no-match {
+    border: 4px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    justify-content: center;
+    width: 350px;
+    height: 200px;
+    display: flex;
+    margin-top: 5px;
+  }
+  

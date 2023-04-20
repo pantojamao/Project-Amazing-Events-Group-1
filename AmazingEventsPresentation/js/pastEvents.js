@@ -12,19 +12,18 @@
 const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
 function addPastEvents() {
     const selectedEventsByCategory = getEventsBySelectedCategories(eventPast);
-    const selectEventsByTitle = getEventsByTitle(selectedEventsByCategory);
-    console.log(selectEventsByTitle)
-    console.log("eventos pasados longitud", selectEventsByTitle.length)
-    if(selectEventsByTitle.length>0){
-        generateEventCards(selectEventsByTitle, ".swiper-wrapper");
+    // Verificar si no hay eventos que coincidan con los filtros seleccionados
+    const selectedEventsByTitle = getEventsByTitle(selectedEventsByCategory);
+    if (selectedEventsByTitle.length === 0) {
+        const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
 
-    }else{
+        return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
 
     }
-    
 
-
+    generateEventCards(selectedEventsByTitle, ".swiper-wrapper");
 }
+
 addPastEvents();
 
 
