@@ -1,20 +1,18 @@
 
-const container = document.querySelector('.swiper-wrapper');
-
 function addHomeEvents() {
-    for (let i = 0; i < eventos.eventos.length; i++) {
-        const slide = document.createElement('div');
-        slide.classList.add("swiper-slide");
-        let CardImage = eventos.eventos[i].image;
-        let CardName = eventos.eventos[i].name;
-        let CardDescription = eventos.eventos[i].description;
-        let CardPrice = eventos.eventos[i].price;
-        const homeEvents = createCardDiv(CardImage, CardName, CardDescription, CardPrice,
-            eventos.eventos[i].date, eventos.eventos[i].category, eventos.eventos[i].place, eventos.eventos[i].capacity, 
-            eventos.eventos[i].assistance || eventos.eventos[i].estimate);
-        slide.appendChild(homeEvents);
-        container.appendChild(slide);
+
+    const selectedEventsByCategory = getEventsBySelectedCategories(eventos.eventos);
+    // Verificar si no hay eventos que coincidan con los filtros seleccionados
+    const selectedEventsByTitle = getEventsByTitle(selectedEventsByCategory);
+    if (selectedEventsByTitle.length === 0) {
+        
+        const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
+
+        return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
+
     }
+
+    generateEventCards(selectedEventsByTitle, ".swiper-wrapper");
 }
 
 addHomeEvents();

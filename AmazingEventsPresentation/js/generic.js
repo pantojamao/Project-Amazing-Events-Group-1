@@ -231,19 +231,13 @@ function getEventsBySelectedCategories(array) {
             });
         }
     });
-
-    // Si no se seleccionó ningún checkbox, devolver el arreglo original
-    if (noFiltersSelected) {
-        return array;
-    }
-
-    return selectedEvents;
+    return noFiltersSelected ? array : selectedEvents;
 
 }
 
 
 function getEventsByTitle(array) {
-    const input = document.getElementById("input-search"); 
+    const input = document.getElementById("input-search");
     const regex = new RegExp(input.value.toLowerCase());
     return array.filter(evento => regex.test(evento.name.toLowerCase()));
 }
