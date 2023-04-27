@@ -1,30 +1,40 @@
 
 
-// const button = document.getElementById("botton-search");
-// button.addEventListener("click", function () {
-//     const input = document.getElementById("input-search");
-//     if (input.value) {
-//         addPastEvents();
-//     } else {
-//         alert("Please enter a search term.");
-//     }
-// });
-const eventPast = eventos.eventos.filter(evento => new Date(evento.date).getTime() < fechaActualTimestamp);
-function addPastEvents() {
-    const selectedEventsByCategory = getEventsBySelectedCategories(eventPast);
-    // Verificar si no hay eventos que coincidan con los filtros seleccionados
-    const selectedEventsByTitle = getEventsByTitle(selectedEventsByCategory);
-    if (selectedEventsByTitle.length === 0) {
-        const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
-
-        return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
-
+async function getEventsFromServer() {
+    let url = `https://pro-talento.up.railway.app/api/amazing/?time=past`;
+    try {
+       
+        let response  =  await fetch(url);
+        response= await response.json();
+        eventPast=response.response;
+        generateEventCards(eventPast, ".swiper-wrapper");
+        document.getElementById('botton-search').addEventListener('click', filterData)
+        document.querySelectorAll('.form-check-input').forEach((each) => each.addEventListener('click', filterData))
+    } catch (error) {
+        console.error(error);
     }
-
-    generateEventCards(selectedEventsByTitle, ".swiper-wrapper");
 }
 
-addPastEvents();
+getEventsFromServer();
+
+async function filterData() {
+    try {
+        let inputSearch = document.getElementById('input-search').value.toLowerCase();
+        let checkbox = Array.from(document.querySelectorAll('.form-check-input:checked')).map(each => each.value);
+        let url = `https://pro-talento.up.railway.app/api/amazing?time=past&name=${inputSearch}&category=${checkbox.join(',')}`;
+        let response = await fetch(url);
+        response = await response.json();
+        if (response.response.length === 0) {
+            const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
+            return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
+        }
+        generateEventCards(response.response, ".swiper-wrapper");
+    } catch (error) {
+        console.error(error);
+    }
+}
+filterData()
+
 
 
 
