@@ -1,19 +1,37 @@
 
-function addFutureEvents() {
-    const eventosFuturos = eventos.eventos.filter(evento => new Date(evento.date).getTime() > fechaActualTimestamp);
-    const selectedEventsByCategory = getEventsBySelectedCategories(eventosFuturos);
-    // Verificar si no hay eventos que coincidan con los filtros seleccionados
-    const selectedEventsByTitle = getEventsByTitle(selectedEventsByCategory);
-    if (selectedEventsByTitle.length === 0) {
-        const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
+async function getEventsFromServer() {
+    let url = `https://pro-talento.up.railway.app/api/amazing/?time=upcoming`;
+    try {
 
-        return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
-
+        let response = await fetch(url);
+        response = await response.json();
+        eventPast = response.response;
+        generateEventCards(eventPast, ".swiper-wrapper");
+        document.getElementById('botton-search').addEventListener('click', filterData)
+        document.querySelectorAll('.form-check-input').forEach((each) => each.addEventListener('click', filterData))
+    } catch (error) {
+        console.error(error);
     }
-
-    generateEventCards(selectedEventsByTitle, ".swiper-wrapper");
 }
-addFutureEvents();
+
+getEventsFromServer();
+async function filterData() {
+    try {
+        let inputSearch = document.getElementById('input-search').value.toLowerCase();
+        let checkbox = Array.from(document.querySelectorAll('.form-check-input:checked')).map(each => each.value);
+        let url = `https://pro-talento.up.railway.app/api/amazing?time=upcoming&name=${inputSearch}&category=${checkbox.join(',')}`;
+        let response = await fetch(url);
+        response = await response.json();
+        if (response.response.length === 0) {
+            const noMatchText = '<div class="no-match">No hay datos que coincidan con los filtros seleccionados.</div>';
+            return document.querySelector(".swiper-wrapper").innerHTML = noMatchText;
+        }
+        generateEventCards(response.response, ".swiper-wrapper");
+    } catch (error) {
+        console.error(error);
+    }
+}
+filterData()
 
 var swiper = new Swiper(".slide-content", {
     slidesPerView: 4,
